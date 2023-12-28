@@ -7,21 +7,21 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const navigate = useNavigate();
-  const [csrfToken, setCSRFToken] = useState('');
+  // const [csrfToken, setCSRFToken] = useState('');
 
-  useEffect(() => {
-    const fetchCSRFToken = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/account/api/get-csrf-token/');
-        const csrfToken = response.data.csrfToken;
-        setCSRFToken(csrfToken);
-      } catch (error) {
-        console.error('API 호출 중 오류:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCSRFToken = async () => {
+  //     try {
+  //       const response = await axios.get('http://127.0.0.1:8000/account/api/get-csrf-token/');
+  //       const csrfToken = response.data.csrfToken;
+  //       setCSRFToken(csrfToken);
+  //     } catch (error) {
+  //       console.error('API 호출 중 오류:', error);
+  //     }
+  //   };
 
-    fetchCSRFToken();
-  }, []);
+  //   fetchCSRFToken();
+  // }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -34,12 +34,13 @@ const Signup = () => {
           password: password,
           name: name,
         },
-        {
-          headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'application/json',
-          },
-        }
+        // {
+        //   headers: {
+        //     'X-CSRFToken': csrfToken,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   withCredentials: true,
+        // }
       );
 
       const data = response.data;

@@ -25,8 +25,8 @@ const Calendar = ({ selectedDate, onDateChange }) => {
     const newDate = new Date(currentYear, currentMonth, day);
     onDateChange(newDate);
 
-    // TodoPage로 이동
-    navigate('/todo-list');
+    // TodoList로 이동 및 클릭한 날짜 정보 전달
+    navigate(`/todo-list`, { state: { date: newDate } });
   };
 
   return (

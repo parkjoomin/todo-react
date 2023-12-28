@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-const TodoListPage = () => {
+const TodoList = () => {
   const [userData, setUserData] = useState([
     { id: 1, name: 'User1', color: '#FF5733', todos: ['Todo 1', 'Todo 2'] },
     { id: 2, name: 'User2', color: '#33FF57', todos: ['Todo 3', 'Todo 4'] },
   ]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
 
   useEffect(() => {
     // 서버에서 실제 데이터를 가져오는 코드 (이 부분은 Django와의 통합 후에 수정될 것입니다)
     // fetchUserDataFromServer().then(data => setUserData(data));
   }, []);
 
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    return new Intl.DateTimeFormat('ko-KR', options).format(date);
+  };
+
   const handleUserClick = (userId) => {
     // 사용자의 Todo 리스트를 보여주는 페이지로 이동
-    navigate(`/user-todo/${userId}`);
+    navigate(`/user-todo/${userId}/`);
   };
 
   return (
     <div>
-      <h1>Todo List</h1>
+      <h1>{state && state.date ? `Todo List for ${formatDate(state.date)}` : 'Todo List'}</h1>
       {userData.map((user) => (
         <div
           key={user.id}
@@ -41,7 +48,10 @@ const TodoListPage = () => {
   );
 };
 
-export default TodoListPage;
+export default TodoList;
+
+
+
 
 
 

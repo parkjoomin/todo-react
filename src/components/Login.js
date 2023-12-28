@@ -6,22 +6,22 @@ const Login = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [csrfToken, setCSRFToken] = useState('');
+  // const [csrfToken, setCSRFToken] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCSRFToken = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/account/api/get-csrf-token/');
-        const csrfToken = response.data.csrf_token;
-        setCSRFToken(csrfToken);
-      } catch (error) {
-        console.error('API 호출 중 오류:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCSRFToken = async () => {
+  //     try {
+  //       const response = await axios.get('http://127.0.0.1:8000/account/api/get-csrf-token/');
+  //       const csrfToken = response.data.csrf_token;
+  //       setCSRFToken(csrfToken);
+  //     } catch (error) {
+  //       console.error('API 호출 중 오류:', error);
+  //     }
+  //   };
 
-    fetchCSRFToken();
-  }, []);
+  //   fetchCSRFToken();
+  // }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,15 +31,20 @@ const Login = () => {
         id: id,
         password: password,
       }, {
-        headers: {
-          'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
-        },
+        // headers: {
+        //   'X-CSRFToken': csrfToken,
+        //   'Content-Type': 'application/json',
+        // },
       });
 
-      console.log('Login success:', response.data);
       // 로그인이 성공하면 다음 동작 수행
-      navigate('/calendar');
+      if(response.data.success) {
+        console.log('Login success:', response.data);
+
+        navigate('/calendar');
+      } else {
+        setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      }
     } catch (error) {
       console.error('Login error:', error);
       setError('아이디 또는 비밀번호가 올바르지 않습니다.');
@@ -61,6 +66,8 @@ const Login = () => {
         </label>
         <br />
         <button type="submit">로그인</button>
+        <button type="submit" onClick={() => navigate('/signup')}>회원가입</button>
+
       </form>
 
       {error && <p>{error}</p>}
